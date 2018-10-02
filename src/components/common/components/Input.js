@@ -26,7 +26,7 @@ class Input extends React.Component {
     let inputAddon;
 
     if (type === 'password') {
-      inputAddon = <Icon onPress={this.toggleShowPassword} type="FontAwesome" name={showPassword ? 'eye-slash' : 'eye'} />;
+      inputAddon = <Icon onPress={this.toggleShowPassword} type="FontAwesome" name={showPassword ? 'eye-slash' : 'eye'} style={{ color: 'rgba(0,0,0,.4)' }} />;
     } else if (addon) {
       inputAddon = addon;
     }

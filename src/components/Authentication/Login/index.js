@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { StatusBar, View, Text, Image, ImageBackground, TouchableOpacity, KeyboardAvoidingView, Keyboard, AsyncStorage } from 'react-native';
+import { StatusBar, View, Text, Image, ImageBackground, TouchableOpacity, KeyboardAvoidingView, Keyboard, AsyncStorage, Dimensions } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 import selectors from './selectors';
 import validations from './validations';
@@ -27,6 +28,8 @@ class Login extends Form {
       validating: {},
       errors: {},
     };
+
+    this.chooseContent = React.createRef();
 
     this.formId = forms.LOGIN;
     this.validations = validations;
@@ -84,72 +87,153 @@ class Login extends Form {
       });
   }
 
+  handleForm = (form) => {
+    const { isLoggingIn, isRegistering } = this.state;
+
+    if (!isLoggingIn && !isRegistering) {
+      this.chooseContent.fadeOutDown()
+        .then(() => {
+          this.setState({
+            isLoggingIn: form === 'register' ? false : true,
+            isRegistering: form === 'register' ? true : false
+          })
+        })
+    }
+
+    if (isLoggingIn) {
+      this.loginForm.fadeOutDown()
+        .then(() => {
+          this.setState({
+            isLoggingIn: false,
+            isRegistering: true
+          }, () => this.registerForm.fadeInUp())
+        })
+    }
+
+    if (isRegistering) {
+      this.registerForm.fadeOutDown()
+        .then(() => {
+          this.setState({
+            isLoggingIn: true,
+            isRegistering: false
+          }, () => this.loginForm.fadeInUp())
+        })
+    }
+  }
+
   render() {
     const { navigation, values, isSubmitting } = this.props;
-    const { showLogo } = this.state;
+    const { isLoggingIn, isRegistering } = this.state;
 
-    const logoContent = showLogo
+    const formContent = isRegistering
       ? (
-        <View style={styles.headerContainer}>
-          <Image
-            style={styles.logoWelcome}
-            source={images.logo}
-            resizeMode="contain"
-          />
-        </View>
+        <Animatable.View ref={(ref) => {
+            if(ref) {
+              this.registerForm = ref;
+            }
+          }}
+          animation="fadeInUp" style={{ flex: 2, justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#fff', width: '100%', padding: 15 }}>
+          <View style={{width: Dimensions.get('window').width - 50}}>
+            <Input
+              itemStyle={styles.itemEmail}
+              {...this.getFieldProps('email')}
+              label="Email"
+              type="email"
+              labelStyle={styles.inputLabel}
+              style={styles.input}
+            />
+            <Input
+              itemStyle={styles.itemEmail}
+              {...this.getFieldProps('password')}
+              label="Password"
+              labelStyle={styles.inputLabel}
+              style={styles.input}
+              type="password"
+            />
+            <Input
+              itemStyle={styles.itemEmail}
+              {...this.getFieldProps('passwordConfirmation')}
+              label="Confirm password"
+              type="password"
+              labelStyle={styles.inputLabel}
+              style={styles.input}
+            />
+            </View>
+            <View style={{width: Dimensions.get('window').width - 50}}>
+              <TouchableOpacity onPress={() => this.setState({ isLoggingIn: true, isRegistering: false })} style={{ backgroundColor: '#2d89e5', marginTop: 30, padding: 15, width: '100%', alignSelf: 'center', borderRadius: 5, elevation: 1 }}>
+                <Text style={{ fontFamily: 'Poppins-Medium', color: '#fff', fontSize: 17, textAlign: 'center' }}>Sign Up</Text>
+              </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.handleForm('login')}>
+              <Text style={{ fontFamily: 'Poppins-Regular', color: 'rgba(0,0,0,.6)', fontSize: 14, textAlign: 'center', paddingTop: 15 }}>I already have an account</Text>
+            </TouchableOpacity>
+            </View>
+        </Animatable.View>
       )
-      : null;
+      : (
+
+        <Animatable.View ref={(ref) => {
+          if(ref) {
+            this.loginForm = ref;
+          }
+        }} animation="fadeInUp" style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#fff', width: '100%', padding: 15 }}>
+          <View style={{width: Dimensions.get('window').width - 50}}>
+            <Input
+              itemStyle={styles.itemEmail}
+              {...this.getFieldProps('email')}
+              label="Email"
+              type="email"
+              labelStyle={styles.inputLabel}
+              style={styles.input}
+            />
+            <Input
+              itemStyle={styles.itemEmail}
+              {...this.getFieldProps('password')}
+              label="Password"
+              labelStyle={styles.inputLabel}
+              style={styles.input}
+              type="password"
+            />
+            </View>
+            <View style={{width: Dimensions.get('window').width - 50}}>
+              <TouchableOpacity onPress={() => this.setState({ isLoggingIn: true, isRegistering: false })} style={{ backgroundColor: '#2d89e5', marginTop: 30, padding: 15, width: '100%', alignSelf: 'center', borderRadius: 5, elevation: 1 }}>
+                <Text style={{ fontFamily: 'Poppins-Medium', color: '#fff', fontSize: 17, textAlign: 'center' }}>Sign In</Text>
+              </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.handleForm('register')}>
+              <Text style={{ fontFamily: 'Poppins-Regular', color: 'rgba(0,0,0,.6)', fontSize: 14, textAlign: 'center', paddingTop: 15 }}>I don't have an account</Text>
+            </TouchableOpacity>
+            </View>
+        </Animatable.View>
+      );
 
     return (
       <ImageBackground
-        source={images.authBg4}
-        style={styles.backgroundImageSize}
-        imageStyle={styles.backgroundImageStyle}
-      >
-        <StatusBar />
+          style={styles.imageBackground}
+          imageStyle={styles.bgImage}
+          source={images.bg}
+        >
         <View style={styles.container}>
-          <View style={styles.contentContainer}>
-            <KeyboardAvoidingView keyboardVerticalOffset={0} style={styles.avoidingView} behavior="padding">
-              {logoContent}
-              <View style={styles.flexContainer}>
-                <Input
-                  itemStyle={styles.itemEmail}
-                  {...this.getFieldProps('email')}
-                  label="Email address"
-                  labelStyle={styles.inputLabel}
-                  style={styles.input}
-                />
-                <Input
-                  itemStyle={styles.itemPassword}
-                  {...this.getFieldProps('password')}
-                  label="Password"
-                  labelStyle={styles.inputLabel}
-                  type="password"
-                  style={styles.input}
-                />
-                <View />
-                <View style={styles.forgotPasswordContainer}>
-                  <Text style={styles.forgotPassword}>
-                    Forgot your password?
-                  </Text>
-                </View>
-              </View>
-              <View style={showLogo ? styles.buttonContainer : styles.buttonContainerKeyboard}>
-                <TouchableOpacity disabled={!(values.email && values.password) || isSubmitting} onPress={this.handleLogin} style={values.email && values.password ? styles.reverseSubmitButton : styles.submitButton}>
-                  <Text style={styles.submitButtonText}>
-                    Log in
-                  </Text>
-                </TouchableOpacity>
-                <Text style={styles.subeading2Login}>
-                  Don&#39;t have a BallerProfile?&nbsp;
-                  <Text onPress={() => navigation.navigate(paths.client.Registration)} style={styles.loginLink}>
-                    Sign me up
-                  </Text>
-                </Text>
-              </View>
-            </KeyboardAvoidingView>
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <Text style={{ fontFamily: 'Poppins-Bold', color: 'white', fontSize: 40, textAlign: 'center' }}>SafePass</Text>
+            <Text style={{ fontFamily: 'Poppins-Regular', color: 'white', fontSize: 17, textAlign: 'center', paddingTop: 15 }}>All your passwords in one place.</Text>
           </View>
-        </View>
+          {isLoggingIn || isRegistering
+            ? formContent
+            : (
+              <Animatable.View ref={(ref) => {
+                if(ref) {
+                  this.chooseContent = ref;
+                }}}
+                 style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => this.handleForm('login')} style={{ backgroundColor: '#fff', padding: 15, width: Dimensions.get('window').width - 100, borderRadius: 5, elevation: 1 }}>
+                  <Text style={{ fontFamily: 'Poppins-Medium', color: '#2d89e5', fontSize: 17, textAlign: 'center' }}>Sign In</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.handleForm('register')} style={{ marginTop: 30, backgroundColor: 'transparent', padding: 15, width: Dimensions.get('window').width - 100, borderRadius: 10 }}>
+                  <Text style={{ fontFamily: 'Poppins-Medium', color: '#fff', fontSize: 17, textAlign: 'center' }}>Sign Up</Text>
+                </TouchableOpacity>
+              </Animatable.View>
+              )
+            }
+          </View>
       </ImageBackground>
     );
   }

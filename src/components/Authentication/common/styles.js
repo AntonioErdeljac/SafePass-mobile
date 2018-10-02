@@ -22,7 +22,6 @@ export default {
   headerMain: {
     fontSize: 25,
     color: '#000',
-    fontFamily: 'calibri',
   },
   headerBaller: {
     color: '#004372',
@@ -36,13 +35,11 @@ export default {
   },
   tosMain: {
     marginTop: 30,
-    fontFamily: 'calibri',
     fontSize: 16,
     textAlign: 'center',
   },
   tosTerms: {
     marginTop: 0,
-    fontFamily: 'calibri',
     fontSize: 16,
     textAlign: 'center',
     color: '#e30000',
@@ -50,7 +47,6 @@ export default {
   },
   tosConditions: {
     marginTop: 0,
-    fontFamily: 'calibri',
     fontSize: 16,
     textAlign: 'center',
     color: '#0172c1',
@@ -60,8 +56,16 @@ export default {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,.9)',
+    backgroundColor: 'transparent',
     display: 'flex',
+  },
+  imageBackground: {
+    height: '100%',
+    width: '100%',
+  },
+  bgImage: {
+    height: '100%',
+    resizeMode: 'cover',
   },
   contentContainer: {
     display: 'flex',
@@ -135,18 +139,15 @@ export default {
   },
   registrationSubmitButtonText: {
     color: '#fff',
-    fontFamily: 'calibri',
     fontSize: 19,
     textAlign: 'center',
   },
   submitButtonText: {
     color: '#fff',
-    fontFamily: 'calibri',
     fontSize: 23,
     textAlign: 'center',
   },
   subheadingWelcome: {
-    fontFamily: 'calibri',
     fontSize: 16,
     color: '#fff',
   },
@@ -208,30 +209,27 @@ export default {
     flexDirection: 'column',
   },
   input: {
-    color: '#fff',
-    fontFamily: 'calibri',
-    fontSize: 19,
+    color: 'rgba(0,0,0,.7)',
+    fontSize: 15,
+    fontFamily: 'Poppins-Regular',
   },
   inputLabel: {
-    color: 'rgba(255,255,255,.3)',
-    fontFamily: 'calibri-italic',
-    fontSize: 16,
+    color: 'rgba(0,0,0,.6)',
+    fontSize: 15,
+    fontFamily: 'Poppins-Regular',
     flex: 1,
   },
   inputLabelRegistration: {
     color: 'rgba(0,0,0,.6)',
-    fontFamily: 'calibri-italic',
     fontSize: 16,
     flex: 1,
   },
   subeading2Login: {
-    fontFamily: 'calibri',
     color: '#fff',
     fontSize: 15,
     paddingTop: 30,
   },
   loginLink: {
-    fontFamily: 'calibri',
     color: '#0172c1',
     fontSize: 15,
     paddingTop: 30,
@@ -247,7 +245,6 @@ export default {
   forgotPassword: {
     color: '#0172c1',
     textDecorationLine: 'underline',
-    fontFamily: 'calibri-italic',
     fontSize: 15,
     textAlign: 'left',
     marginTop: 24,
@@ -259,7 +256,6 @@ export default {
     marginRight: 27,
   },
   registrationOr: {
-    fontFamily: 'calibri-italic',
     fontSize: 18,
     color: '#000',
   },
@@ -292,7 +288,6 @@ export default {
   instaText: {
     color: '#9220a3',
     fontSize: 15,
-    fontFamily: 'calibri',
   },
   twitterButton: {
     marginTop: 17,
@@ -311,7 +306,6 @@ export default {
   twitterText: {
     color: '#26a6d1',
     fontSize: 15,
-    fontFamily: 'calibri',
     textAlign: 'center',
   },
   logoTwitter: {

@@ -25,8 +25,10 @@ import twitter2 from './twitter2.png';
 import whatsapp from './whatsapp.png';
 import user from './user.jpg';
 import team from './team.png';
+import bg from './bg.jpg';
 
 export default {
+  bg,
   insta2,
   team,
   twitter2,

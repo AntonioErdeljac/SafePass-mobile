@@ -91,7 +91,7 @@ export default {
   },
   itemEmail: {
     marginTop: 20,
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
   },
   itemPassword: {
     marginTop: 25,
